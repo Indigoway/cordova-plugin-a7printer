@@ -1,4 +1,4 @@
-package com.example.plugin;
+package com.indigoway.phonegap;
 
 import org.apache.cordova.*;
 import org.json.JSONArray;
@@ -12,7 +12,7 @@ import android.os.Handler;
 import java.io.UnsupportedEncodingException;
 import android.widget.Toast;
 
-public class Hello extends CordovaPlugin {
+public class A7printer extends CordovaPlugin {
 
     /* Adicionado  */
     public static NfePrinterA7 nfeprinter;
