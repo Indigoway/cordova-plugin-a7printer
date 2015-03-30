@@ -1,13 +1,13 @@
-#import "HWPHello.h"
+#import "HWPA7printer.h"
 
-@implementation HWPHello
+@implementation HWPA7printer
 
 - (void)greet:(CDVInvokedUrlCommand*)command
 {
 
     NSString* callbackId = [command callbackId];
     NSString* name = [[command arguments] objectAtIndex:0];
-    NSString* msg = [NSString stringWithFormat: @"Hello, %@", name];
+    NSString* msg = [NSString stringWithFormat: @"A7printer, %@", name];
 
     CDVPluginResult* result = [CDVPluginResult
                                resultWithStatus:CDVCommandStatus_OK

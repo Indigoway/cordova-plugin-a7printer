@@ -1,6 +1,6 @@
 #import <Cordova/CDV.h>
 
-@interface HWPHello : CDVPlugin
+@interface HWPA7printer : CDVPlugin
 
 - (void) greet:(CDVInvokedUrlCommand*)command;
 
