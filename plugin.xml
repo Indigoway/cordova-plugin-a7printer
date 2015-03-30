@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+        id="com.indigoway.phonegap.a7printer"
+        version="0.7.6">
+
+  <name>A7printer</name>
+  <description>Plugin para impressão de NFE e Boleto na Leopardo A7</description>
+
+  <engines>
+    <engine name="cordova" version=">=3.4.0"/>
+  </engines>
+
+  <asset src="www/a7printer.js" target="js/a7printer.js"/>
+
+  <js-module src="www/a7printer.js" name="a7printer">
+    <clobbers target="a7printer" />
+  </js-module>
+
+  <platform name="android">
+
+    <config-file target="res/xml/config.xml" parent="/*">
+      <feature name="a7printer">
+        <param name="android-package" value="com.indigoway.phonegap.a7printer"/>
+      </feature>
+    </config-file>
+
+    <config-file target="AndroidManifest.xml" parent="/manifest">
+        <uses-permission android:name="android.permission.BLUETOOTH"/>
+        <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    </config-file>
+
+    <source-file src="src/android/A7printer.java" target-dir="src/com/indigoway/phonegap/"/>
+    <source-file src="src/android/libs/NfePrinterLib.jar" target-dir="libs" />
+    <source-file src="src/android/libs/RegoPrintLib.jar" target-dir="libs" />
+  </platform>
+
+  <platform name="ios">
+    
+    <config-file target="config.xml" parent="/widget">
+      <feature name="A7printer">
+        <param name="ios-package" value="HWPA7printer" />
+      </feature>
+    </config-file>
+
+    <header-file src="src/ios/HWPA7printer.h" target-dir="A7printerPlugin"/>
+    <source-file src="src/ios/HWPA7printer.m" target-dir="A7printerPlugin"/>
+  </platform>
+
+  <platform name="wp7">
+    <source-file src="src/wp7/A7printer.cs"/>
+  </platform>
+
+</plugin>
