@@ -1,4 +1,4 @@
-package com.indigoway.phonegap;
+package com.indigoway.phonegap.plugin;
 
 import org.apache.cordova.*;
 import org.json.JSONArray;

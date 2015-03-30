@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
         id="com.indigoway.phonegap.a7printer"
-        version="0.7.9">
+        version="0.7.11">
 
   <name>A7printer</name>
   <description>Plugin para impressão de NFE e Boleto na Leopardo A7</description>
@@ -20,7 +20,7 @@
 
     <config-file target="res/xml/config.xml" parent="/*">
       <feature name="a7printer">
-        <param name="android-package" value="com.indigoway.phonegap.a7printer"/>
+        <param name="android-package" value="com.indigoway.phonegap.plugin.a7printer"/>
       </feature>
     </config-file>
 
@@ -29,7 +29,7 @@
         <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
     </config-file>
 
-    <source-file src="src/android/A7printer.java" target-dir="src/com/indigoway/phonegap/"/>
+    <source-file src="src/android/A7printer.java" target-dir="src/com/indigoway/phonegap/plugin"/>
     <source-file src="src/android/libs/NfePrinterLib.jar" target-dir="libs" />
     <source-file src="src/android/libs/RegoPrintLib.jar" target-dir="libs" />
   </platform>
