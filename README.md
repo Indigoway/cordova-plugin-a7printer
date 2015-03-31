@@ -1,6 +1,6 @@
 # Cordova a7printer Plugin
 
-Bluetooth communication with a7printer
+Bluetooth communication with the a7printer
 
 ## Using
 Clone the plugin
@@ -28,7 +28,7 @@ Edit `www/js/index.js` and add the following code inside `onDeviceReady`
         alert("Error calling A7printer Plugin");
     }
 
-    hello.greet("World", success, failure);
+    a7printer.greet("World", success, failure);
 ```
 
 Install iOS or Android platform
