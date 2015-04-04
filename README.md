@@ -1,4 +1,5 @@
-# Cordova a7printer Plugin
+# [Work In Progress]
+## Cordova a7printer Plugin 
 
 Bluetooth communication with the a7printer
 
