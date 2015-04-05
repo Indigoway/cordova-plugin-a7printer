@@ -25,7 +25,7 @@ public class A7printer extends CordovaPlugin {
     @Override
     public boolean execute(String action, JSONArray data, CallbackContext callbackContext) throws JSONException {
 
-        if (action.equals("greet")) {
+        if (action.equals("boleto")) {
 
             nfeprinter = new NfePrinterA7();
             boletoprinter = new BoletoPrinter();

@@ -29,7 +29,7 @@ Edit `www/js/index.js` and add the following code inside `onDeviceReady`
         alert("Error calling A7printer Plugin");
     }
 
-    a7printer.greet("World", success, failure);
+    a7printer.boleto("World", success, failure);
 ```
 
 Install iOS or Android platform
