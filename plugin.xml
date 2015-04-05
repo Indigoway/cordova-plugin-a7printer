@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
         id="com.indigoway.phonegap.a7printer"
-        version="0.7.18">
+        version="0.7.28">
 
   <name>A7printer</name>
   <description>Plugin para impressão de NFE e Boleto na Leopardo A7</description>

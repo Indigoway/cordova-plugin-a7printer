@@ -19,39 +19,35 @@ public class A7printer extends CordovaPlugin {
     public static BoletoPrinter boletoprinter;
     public static ReceiptPrinterA7 receiptprinter;
     private static BoletoUtils boleto;
-    private static int btntype = 0;
     private static boolean connected = false;
 
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
-        nfeprinter = new NfePrinterA7();
-        boletoprinter = new BoletoPrinter();
-        receiptprinter = new ReceiptPrinterA7();
+        //nfeprinter = new NfePrinterA7();
+        //boletoprinter = new BoletoPrinter();
+        //receiptprinter = new ReceiptPrinterA7();
     }
 
     @Override
-    public boolean execute(String action, JSONArray data, CallbackContext callbackContext) throws JSONException {
-
+    public boolean execute(String action, final JSONArray data, final CallbackContext callbackContext) throws JSONException {
         if (action.equals("boleto")) {
-
             cordova.getThreadPool().execute(new Runnable() {
                 public void run() {
                     genBoletoByClassA7();
-                    String name = data.getString(0);
-                    String message = "Hello, " + name;
-                    callbackContext.success(message); // Thread-safe.
+                    callbackContext.success("Deu certo!"); // Thread-safe.
                 }
             });
-
             return true;
-
         } else {
             return false;
         }
     }
 
     public void genBoletoByClassA7(){
+        
+        boletoprinter = new BoletoPrinter();
+
         connected = boletoprinter.connect(false);
         if(connected){
             boleto = new BoletoUtils();
@@ -91,25 +87,9 @@ public class A7printer extends CordovaPlugin {
 
             boletoprinter.getMobilePrinter().Reset();
             boletoprinter.printBoleto(boleto);
-
-            btntype = 1;
         }else{
             //Toast.makeText(this, "Não foi possível realizar a conexão  com a impressora!", Toast.LENGTH_LONG).show();
         }
     }
 
-
-    // manages Threads messages of Receipt
-    static private Handler threadHandlerReceipt = new Handler() {
-        public void handleMessage(android.os.Message msg) {
-            // handling messages and acting for the Thread goes here
-            if(msg.what==1){
-               //
-            }else{
-                while (receiptprinter.getMobilePrinter().QueryPrinterStatus()!= 0) {
-                }
-                receiptprinter.disconnect();
-            }
-        }
-    };
 }
