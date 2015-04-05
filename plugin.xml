@@ -21,6 +21,7 @@
     <config-file target="res/xml/config.xml" parent="/*">
       <feature name="A7printer">
         <param name="android-package" value="com.indigoway.phonegap.plugin.A7printer"/>
+        <param name="onload" value="true" />
       </feature>
     </config-file>
 
