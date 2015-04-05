@@ -23,33 +23,37 @@ public class A7printer extends CordovaPlugin {
     private static boolean connected = false;
 
     @Override
+    public void initialize(CordovaInterface cordova, CordovaWebView webView) {
+        super.initialize(cordova, webView);
+        nfeprinter = new NfePrinterA7();
+        boletoprinter = new BoletoPrinter();
+        receiptprinter = new ReceiptPrinterA7();
+    }
+
+    @Override
     public boolean execute(String action, JSONArray data, CallbackContext callbackContext) throws JSONException {
 
         if (action.equals("boleto")) {
 
-            nfeprinter = new NfePrinterA7();
-            boletoprinter = new BoletoPrinter();
-            receiptprinter = new ReceiptPrinterA7();
-
-            genBoletoByClassA7();
-
-            String name = data.getString(0);
-            String message = "Hello, " + name;
-            callbackContext.success(message);
+            cordova.getThreadPool().execute(new Runnable() {
+                public void run() {
+                    genBoletoByClassA7();
+                    String name = data.getString(0);
+                    String message = "Hello, " + name;
+                    callbackContext.success(message); // Thread-safe.
+                }
+            });
 
             return true;
 
         } else {
-            
             return false;
-
         }
     }
 
     public void genBoletoByClassA7(){
         connected = boletoprinter.connect(false);
         if(connected){
-
             boleto = new BoletoUtils();
             boleto.setLinhaDigitavel("23792.38401 61130.370598 68001.271805 1 56220000320000");
             boleto.setNomeBanco("Bradesco");
@@ -85,39 +89,15 @@ public class A7printer extends CordovaPlugin {
             boleto.setSacadoUF("SP");
             boleto.setSacadoCnpj("061.557.856/0001-57");
 
-            // inicio uma outrathread para imprimir o boleto
-            Thread printerThread = new Thread() {
-                // setting the behavior we want from the Thread
-                @Override
-                public void run() {
-                    threadHandlerBoleto.sendEmptyMessage(0);
-                }
-            };
-            printerThread.start();
-
-
-            //passei a imprimir o boleto em uma thread separada pois estava travando a tela
-            /*boletoprinter.getMobilePrinter().Reset();
-            boletoprinter.printBoleto(boleto);*/
+            boletoprinter.getMobilePrinter().Reset();
+            boletoprinter.printBoleto(boleto);
 
             btntype = 1;
-            Thread currentThread = new Thread();
-            currentThread.start();
-
         }else{
             //Toast.makeText(this, "Não foi possível realizar a conexão  com a impressora!", Toast.LENGTH_LONG).show();
         }
-
     }
 
-    // manages Threads messages of Boleto
-    static private Handler threadHandlerBoleto = new Handler() {
-        public void handleMessage(android.os.Message msg) {
-            // handling messages and acting for the Thread goes here
-            boletoprinter.getMobilePrinter().Reset();
-            boletoprinter.printBoleto(boleto);
-        }
-    };
 
     // manages Threads messages of Receipt
     static private Handler threadHandlerReceipt = new Handler() {
