@@ -20,7 +20,7 @@ public class A7printer extends CordovaPlugin {
 
     /* Adicionado  */
     public static NfePrinterA7 nfeprinter;
-    public static BoletoPrinter boletoprinter;
+    public static BoletoPrinter boletoprinter = null;
     public static ReceiptPrinterA7 receiptprinter;
     private static BoletoUtils boleto;
     private static boolean connected = false;
@@ -35,8 +35,6 @@ public class A7printer extends CordovaPlugin {
 
     @Override
     public boolean execute(String action, JSONArray data, final CallbackContext callbackContext) throws JSONException {
-        System.out.println("*****JARRAY data*****" + data.length());
-
         JSONObject json_data = null;
 
         for(int i=0; i<data.length(); i++){
@@ -58,8 +56,7 @@ public class A7printer extends CordovaPlugin {
             cordova.getThreadPool().execute(new Runnable() {
                 JSONObject p = boletoParams;
                 public void run() {
-                    genBoletoByClassA7(p);
-                    callbackContext.success("Deu certo!"); // Thread-safe.
+                    genBoletoByClassA7(p, callbackContext );
                 }
             });
             return true;
@@ -68,13 +65,22 @@ public class A7printer extends CordovaPlugin {
         }
     }
 
-    public void genBoletoByClassA7(JSONObject boletoData ){
+    public void genBoletoByClassA7(JSONObject boletoData, final CallbackContext callbackContext ){
 
         System.out.println("*****JARRAY data*****" + boletoData.toString());
 
-        boletoprinter = new BoletoPrinter();
+        // Instancia boletoprinter caso não tenha sido instanciado
+        if (boletoprinter == null)
+            boletoprinter = new BoletoPrinter();
 
+        // Rodando Toaster na UI Thread
+        cordova.getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                Toast.makeText(cordova.getActivity(), "Conectando-se à impressora...", Toast.LENGTH_LONG).show();
+            }
+        });
         connected = boletoprinter.connect(false);
+
         if(connected){
             boleto = new BoletoUtils();
 
@@ -156,9 +162,23 @@ public class A7printer extends CordovaPlugin {
                 boleto.setSacadoCnpj(boletoData.optString("sacadoCnpj"));
 
             boletoprinter.getMobilePrinter().Reset();
+            // Rodando Toaster na UI Thread
+            cordova.getActivity().runOnUiThread(new Runnable() {
+                public void run() {
+                    Toast.makeText(cordova.getActivity(), "Imprimindo...", Toast.LENGTH_LONG).show();
+                }
+            });
             boletoprinter.printBoleto(boleto);
+            boletoprinter.disconnect();
+            callbackContext.success("Boleto impresso!"); // Thread-safe.
         }else{
-            //Toast.makeText(this, "Não foi possível realizar a conexão  com a impressora!", Toast.LENGTH_LONG).show();
+            // Rodando Toaster na UI Thread
+            cordova.getActivity().runOnUiThread(new Runnable() {
+                public void run() {
+                    Toast.makeText(cordova.getActivity(), "Não foi possível realizar a conexão  com a impressora!", Toast.LENGTH_LONG).show();
+                }
+            });
+            callbackContext.error("Não foi possível imprimir o boleto."); // Thread-safe.
         }
     }
 
